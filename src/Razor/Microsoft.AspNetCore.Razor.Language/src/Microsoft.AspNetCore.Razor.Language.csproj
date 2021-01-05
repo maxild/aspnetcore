@@ -3,10 +3,36 @@
   <PropertyGroup>
     <Description>Razor is a markup syntax for adding server-side logic to web pages. This package contains the Razor parser and code generation infrastructure.</Description>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <PublishWindowsPdb>true</PublishWindowsPdb>
+    <!-- Prevent pdb2pdb.exe from running because it is currently causing build failures in RazorLearningTests. -->
+    <PublishWindowsPdb>false</PublishWindowsPdb>
+    <!-- We need this in order to be able to use PackageReference instead of Reference -->
+    <DisablePackageReferenceRestrictions>true</DisablePackageReferenceRestrictions>
     <!-- Need to build this project in source build -->
     <ExcludeFromSourceBuild>false</ExcludeFromSourceBuild>
   </PropertyGroup>
+
+  <!--
+    warning NETSDK1023: A PackageReference for 'Microsoft.DiaSymReader.Pdb2Pdb' was included in your project.
+    This package is implicitly referenced by the .NET SDK and you do not typically need to
+    reference it from your project. For more information, see https://aka.ms/sdkimplicitrefs
+
+    This will not help
+
+    <PropertyGroup>
+      <NoWarn>$(NoWarn);NETSDK1023</NoWarn>
+    </PropertyGroup>
+
+    But the warning is not a problem (in RazorLearningTests)
+
+    This is another option/solution to get rid of the implicitref of
+    'Microsoft.DiaSymReader.Pdb2Pdb', that I have not tried
+
+    <DisableImplicitFrameworkReferences>true</DisableImplicitFrameworkReferences>
+  -->
+  <ItemGroup>
+    <!-- inserted in order for restore to always succeed ("*-*" means float everything! Latest version available) -->
+    <PackageReference Include="Microsoft.DiaSymReader.Pdb2Pdb" Version="*-*" />
+  </ItemGroup>
 
   <ItemGroup>
     <Compile Include="$(SharedSourceRoot)HashCodeCombiner\*.cs" />
