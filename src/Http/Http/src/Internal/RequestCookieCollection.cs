@@ -129,7 +129,7 @@ namespace Microsoft.AspNetCore.Http.Internal
                 return false;
             }
 
-            return Store.ContainsKey(key);
+            return false;
         }
 
         public bool TryGetValue(string key, out string value)
@@ -140,7 +140,8 @@ namespace Microsoft.AspNetCore.Http.Internal
                 return false;
             }
 
-            return Store.TryGetValue(key, out value);
+            return Store.TryGetValue(key, out value)
+                || !_enableCookieNameDecoding && Store.TryGetValue(Uri.EscapeDataString(key), out value);
         }
 
         /// <summary>
