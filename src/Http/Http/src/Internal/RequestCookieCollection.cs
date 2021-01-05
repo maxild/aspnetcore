@@ -140,8 +140,8 @@ namespace Microsoft.AspNetCore.Http.Internal
                 return false;
             }
 
-            return Store.TryGetValue(key, out value)
-                || !_enableCookieNameDecoding && Store.TryGetValue(Uri.EscapeDataString(key), out value);
+            value = null;
+            return false;
         }
 
         /// <summary>
