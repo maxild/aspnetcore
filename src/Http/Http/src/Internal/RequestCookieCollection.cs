@@ -88,6 +88,7 @@ namespace Microsoft.AspNetCore.Http.Internal
                     {
                         name = Uri.UnescapeDataString(name);
                     }
+
                     var value = Uri.UnescapeDataString(cookie.Value.Value);
                     store[name] = value;
                 }
@@ -127,8 +128,8 @@ namespace Microsoft.AspNetCore.Http.Internal
             {
                 return false;
             }
-            return Store.ContainsKey(key)
-                || !_enableCookieNameDecoding && Store.ContainsKey(Uri.EscapeDataString(key));
+
+            return Store.ContainsKey(key);
         }
 
         public bool TryGetValue(string key, out string value)
@@ -139,8 +140,7 @@ namespace Microsoft.AspNetCore.Http.Internal
                 return false;
             }
 
-            return Store.TryGetValue(key, out value)
-                || !_enableCookieNameDecoding && Store.TryGetValue(Uri.EscapeDataString(key), out value);
+            return Store.TryGetValue(key, out value);
         }
 
         /// <summary>
